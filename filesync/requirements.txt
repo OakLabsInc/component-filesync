@@ -1,0 +1,5 @@
+futures==3.0.5
+grpcio==1.15.0
+gunicorn==19.7.1
+protobuf==3.6.1
+sh==1.12.13

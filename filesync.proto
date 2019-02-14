@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package oak.application;
+
+service Filesync {
+
+  // Show current state of synchronization
+  rpc Info (Empty) returns (FilesyncInformation) {}
+
+  // Start syncing or restart a sync in progress
+  // Use this if you've just updated a file and want it synced
+  // immediately.
+  rpc Restart (Empty) returns (FilesyncInformation) {}
+
+  // Force the next sync to start now
+  // This will do nothing if a sync is in progress. If you want to see
+  // new files immediately, see `restart`. Use this endpoint if you're
+  // just impatient.
+  rpc Start (Empty) returns (FilesyncInformation) {}
+
+  // Cancel a sync in progress
+  // This will only cancel syncing if syncing is in progress at the
+  // time. This will not un-schedule future syncs.
+  rpc Abort (Empty) returns (FilesyncInformation) {}
+
+  // Block until the next sync ends
+
+  // This will return the next time a sync ends (successfully or
+  // not). This is useful if you need your app to wait until certain
+  // files are available before continuing.
+  rpc Wait (Empty) returns (FilesyncInformation) {}
+
+  // Monitor the next sync
+  // This will stream log messages for the current or next sync and
+  // then close. This is meant for debugging purposes.
+  rpc Watch (Empty) returns (stream Line) {}
+}
+
+message Empty {}
+
+message Line {
+  string line = 1;
+}
+
+message FilesyncInformation {
+  bool syncing_now = 1;
+  uint32 syncs_completed = 2;
+  uint32 seconds_since_last_complete = 3;
+  uint32 seconds_until_next_start = 4;
+  uint32 seconds_last_duration = 5;
+  uint32 seconds_current_duration = 6;
+}

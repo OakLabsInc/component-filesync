@@ -1,0 +1,27 @@
+---
+version: '3'
+
+volumes:
+  app-persistent-storage:
+
+services:
+
+  app:
+    build: .
+    image: index.docker.io/oaklabs/component-filesync:${VERSION-latest}
+    volumes:
+      - /dev/shm:/dev/shm
+      - app-persistent-storage:/persistent
+      - ./filesync:/src/filesync:ro
+      - ./bin:/src/bin:ro
+      - ./conf:/conf:ro
+      - ./gcloud-credentials.json:/gcloud-credentials.json
+    environment:
+      - CONTROL_PORT=9102
+      - DATA_PORT=9103
+      - GS_URL
+      - SYNC_DIR=/persistent/files
+      - SYNC_PERIOD=600
+    ports:
+      - "9102:9102"
+      - "9103:9103"
