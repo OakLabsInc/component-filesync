@@ -1,5 +1,7 @@
 # Filesync - Google Cloud Storage Syncing
 
+[![Dockerhub](https://img.shields.io/static/v1.svg?label=Docker%20Hub&message=latest&color=green)](https://hub.docker.com/r/oaklabs/component-filesync)
+
 This service will periodically, atomically sync a Google Cloud Storage
 directory to this container and server the contents over http.
 
